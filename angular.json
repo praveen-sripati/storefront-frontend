@@ -29,14 +29,24 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
-              "src/styles.scss"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles/main.scss",
+              {
+                "inject": false,
+                "input": "src/styles/custom-themes/dark-theme.scss",
+                "bundleName": "dark-theme"
+              },
+              {
+                "inject": false,
+                "input": "src/styles/custom-themes/light-theme.scss",
+                "bundleName": "light-theme"
+              }
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/@lottiefiles/lottie-player/dist/lottie-player.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -97,14 +107,24 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
-              "src/styles.scss"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles/main.scss",
+              {
+                "inject": false,
+                "input": "src/styles/custom-themes/dark-theme.scss",
+                "bundleName": "dark-theme"
+              },
+              {
+                "inject": false,
+                "input": "src/styles/custom-themes/light-theme.scss",
+                "bundleName": "light-theme"
+              }
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/@lottiefiles/lottie-player/dist/lottie-player.js"
+            ]
           }
         }
       }
