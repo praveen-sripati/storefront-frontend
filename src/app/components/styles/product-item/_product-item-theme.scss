@@ -1,0 +1,14 @@
+@use "sass:map";
+@use "src/styles/_constants.scss";
+
+@mixin theme($theme) {
+  $is-dark-theme: map.get($theme, is-dark);
+
+  .card {
+    background: if(
+      $is-dark-theme,
+      constants.$blue-grey-800,
+      constants.$superlightgray
+    );
+  }
+}
