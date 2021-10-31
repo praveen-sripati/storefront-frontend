@@ -1,0 +1,9 @@
+@use 'base/typography-theme';
+@use 'src/app/layout/styles/theme' as layout-themes;
+@use 'src/app/components/styles/theme' as component-themes;
+
+@mixin theme($theme) {
+  @include typography-theme.theme($theme);
+  @include layout-themes.theme($theme);
+  @include component-themes.theme($theme);
+}

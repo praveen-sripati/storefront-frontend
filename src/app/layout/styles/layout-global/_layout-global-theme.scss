@@ -1,0 +1,38 @@
+@use "sass:map";
+@use "src/styles/_constants.scss";
+@use "~@angular/material" as mat;
+
+@mixin theme($theme) {
+  $is-dark-theme: map.get($theme, is-dark);
+
+  html,
+  body {
+    background: if($is-dark-theme, constants.$blue-grey-900, constants.$white);
+  }
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: if($is-dark-theme, constants.$blue-grey-800, constants.$lightgray);
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: if($is-dark-theme, constants.$mist, constants.$blue-grey-700);
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: if($is-dark-theme, constants.$blue-grey-50, constants.$darkgray);
+  }
+
+  .mat-flat-button {
+    background: if($is-dark-theme, constants.$purple-400, constants.$pink-400);
+  }
+}

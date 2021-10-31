@@ -1,0 +1,14 @@
+@use "../app-theme";
+@use "~@angular/material" as mat;
+
+$sf-primary: mat.define-palette(mat.$pink-palette, 700, 600, 800);
+$sf-accent: mat.define-palette(mat.$pink-palette, 700, 600, 800);
+$sf-warn: mat.define-palette(mat.$red-palette);
+$sf-theme: mat.define-light-theme(
+  $sf-primary,
+  $sf-accent,
+  $sf-warn
+);
+
+@include mat.all-component-themes($sf-theme);
+@include app-theme.theme($sf-theme);

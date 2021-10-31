@@ -1,0 +1,16 @@
+.mat-form-field {
+  .sf-price-input {
+    text-align: right;
+  }
+
+  input.sf-price-input::-webkit-outer-spin-button,
+  input.sf-price-input::-webkit-inner-spin-button {
+    display: none;
+  }
+
+  input.sf-price-input {
+    -moz-appearance: textfield;
+  }
+}
+
+

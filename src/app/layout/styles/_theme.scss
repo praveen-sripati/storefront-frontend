@@ -1,0 +1,9 @@
+@use "header/header-theme";
+@use "main-body/main-body-theme";
+@use "layout-global/layout-global-theme";
+
+@mixin theme($theme) {
+  @include header-theme.theme($theme);
+  @include main-body-theme.theme($theme);
+  @include layout-global-theme.theme($theme);
+}
