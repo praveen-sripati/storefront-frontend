@@ -1,24 +1,53 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
 
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatBadgeModule } from '@angular/material/badge';
+
+import { STORAGE_PROVIDERS } from './shared/storage.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ThemePickerComponent } from './shared/theme-picker/theme-picker.component';
+import { MainBodyComponent } from './layout/main-body/main-body.component';
+import { ProductItemComponent } from './components/product-item/product-item.component';
+import { ProductItemDetailComponent } from './components/product-item-detail/product-item-detail.component';
+import { CartComponent } from './components/cart/cart.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductListComponent,
-    HeaderComponent
+    HeaderComponent,
+    ThemePickerComponent,
+    MainBodyComponent,
+    ProductItemComponent,
+    ProductItemDetailComponent,
+    CartComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
-    NgbModule
+    ReactiveFormsModule,
+    NgbModule,
+    MatButtonModule,
+    MatIconModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatBadgeModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [STORAGE_PROVIDERS],
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule { }
+export class AppModule {}
