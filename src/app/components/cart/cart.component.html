@@ -1,0 +1,66 @@
+<div class="sf-cart-page-wrapper">
+  <ng-container *ngIf="cartList.length === 0">
+    <div class="d-flex flex-column justify-content-center align-items-center">
+      <lottie-player
+        autoplay
+        loop
+        mode="normal"
+        src="https://assets5.lottiefiles.com/packages/lf20_3VDN1k.json"
+        style="width: 400px"
+      >
+      </lottie-player>
+      <h2 class="w-75 text-center mt-4">
+        A little sad shopping bag, waiting for items to be added to it.
+      </h2>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="cartList.length > 0">
+    <div class="sf-cart-products-container">
+      <form [formGroup]="quantityForm">
+        <ng-container formArrayName="quantities">
+          <div
+            class="sf-cart-product-wrapper mb-5"
+            *ngFor="let product of cartList; let i = index"
+          >
+            <img [src]="product.url" class="img-fluid" alt="Responsive image" />
+            <div class="d-flex flex-column">
+              <h5 class="mb-3">{{ product.name }}</h5>
+              <h3 class="mb-3">${{ product.price }}</h3>
+              <p class="mb-3">{{ product.description }}</p>
+              <mat-form-field
+                appearance="fill"
+                floatLabel="always"
+                [formGroupName]="i"
+              >
+                <mat-label>Quantity</mat-label>
+                <mat-select
+                  formControlName="quantity"
+                  (selectionChange)="quantityChange(product.id, $event)"
+                >
+                  <mat-option
+                    [value]="value"
+                    *ngFor="let value of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+                    >{{ value }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </ng-container>
+      </form>
+    </div>
+    <form class="d-flex flex-column">
+      <mat-form-field class="mb-3" appearance="fill" floatLabel="always">
+        <mat-label>Quantity</mat-label>
+        <mat-select>
+          <mat-option
+            [value]="value"
+            *ngFor="let value of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+            >{{ value }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <button mat-flat-button>Add to Cart</button>
+    </form>
+  </ng-container>
+</div>

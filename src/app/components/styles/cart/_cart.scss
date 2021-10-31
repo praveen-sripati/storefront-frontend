@@ -1,0 +1,25 @@
+.sf-cart-page-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 50px 0;
+  .sf-cart-products-container {
+    display: flex;
+    flex-direction: column;
+    margin-right: 40px;
+    max-height: calc(100vh - 114px);
+    overflow: auto;
+    .sf-cart-product-wrapper {
+      display: flex;
+      align-items: center;
+      padding-right: 60px;
+      img {
+        height: 250px;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 10px;
+        margin-right: 40px;
+      }
+    }
+  }
+}
