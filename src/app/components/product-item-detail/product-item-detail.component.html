@@ -1,0 +1,28 @@
+<div class="sf-product-item-detail-wrapper">
+  <img [src]="product.url" class="img-fluid" alt="Responsive image" />
+  <div class="d-flex flex-column">
+    <h5 class="mb-3">{{ product.name }}</h5>
+    <h3 class="mb-3">${{ product.price }}</h3>
+    <p class="mb-3">{{ product.description }}</p>
+    <form [formGroup]="productItemDetailForm">
+      <mat-form-field class="w-75" appearance="fill" floatLabel="always">
+        <mat-label>Quantity</mat-label>
+        <mat-select
+          formControlName="quantity"
+          (selectionChange)="quantityChange(product.id, $event)"
+        >
+          <mat-option
+            [value]="value"
+            *ngFor="let value of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+            >{{ value }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <button mat-flat-button (click)="addToCart(product.id)">Add to Cart</button>
+    </form>
+    <a class="d-flex align-items-center mt-4" [routerLink]="['']">
+      <mat-icon>arrow_back_ios</mat-icon>
+      Back to Product List
+    </a>
+  </div>
+</div>
