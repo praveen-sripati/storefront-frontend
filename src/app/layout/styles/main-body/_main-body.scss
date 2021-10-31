@@ -1,0 +1,7 @@
+.sf-main-body {
+  min-height: 100%;
+  height: calc(100vh - 64px);
+  position: relative;
+  top: 64px;
+  z-index: 1;
+}

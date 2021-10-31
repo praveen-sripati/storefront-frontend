@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { Product } from '../shared.model';
+import { ProductListService } from '../../services/product-list.service';
 
 @Component({
   selector: 'sf-product-list',
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent implements OnInit {
+  productList: Product[] = []
 
-  constructor() { }
+  constructor(private productListService: ProductListService) { }
 
   ngOnInit(): void {
+    this.productList = this.productListService.getProducts()
   }
 
 }

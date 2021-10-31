@@ -1,0 +1,12 @@
+@use "sass:map";
+@use "src/styles/_constants.scss";
+@use "src/styles/_mixins.scss";
+
+@mixin theme($theme) {
+  $is-dark-theme: map.get($theme, is-dark);
+
+  body,
+  sf-main-body .sf-main-body {
+    background: if($is-dark-theme, constants.$blue-grey-900, constants.$white);
+  }
+}

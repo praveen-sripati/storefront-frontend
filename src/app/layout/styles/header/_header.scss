@@ -1,0 +1,21 @@
+@use "src/styles/_constants.scss";
+
+.sf-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  padding: 0 20px;
+  .nav {
+    .nav-link {
+      transition: all 0.125s ease;
+      border-radius: 5px;
+    }
+  }
+}

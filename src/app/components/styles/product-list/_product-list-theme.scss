@@ -1,0 +1,7 @@
+@use "sass:map";
+@use "src/styles/_constants.scss";
+@use "src/styles/_mixins.scss";
+
+@mixin theme($theme) {
+  $is-dark-theme: map.get($theme, is-dark);
+}

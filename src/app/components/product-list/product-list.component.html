@@ -1,1 +1,5 @@
-<p>product-list works!</p>
+<div class="sf-product-list-wrapper row">
+  <div class="col-lg-4 col-sm-6 mb-5" *ngFor="let product of productList">
+    <sf-product-item [product]="product"></sf-product-item>
+  </div>
+</div>

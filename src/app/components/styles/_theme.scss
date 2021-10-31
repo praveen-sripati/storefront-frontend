@@ -1,0 +1,9 @@
+@use "product-list/product-list-theme";
+@use "product-item/product-item-theme";
+@use "cart/cart-theme";
+
+@mixin theme($theme) {
+  @include product-list-theme.theme($theme);
+  @include product-item-theme.theme($theme);
+  @include cart-theme.theme($theme);
+}

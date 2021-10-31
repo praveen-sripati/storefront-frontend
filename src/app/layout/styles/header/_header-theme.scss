@@ -1,0 +1,34 @@
+@use "sass:map";
+@use "src/styles/_constants.scss";
+@use "src/styles/_mixins.scss";
+
+@mixin theme($theme) {
+  $is-dark-theme: map.get($theme, is-dark);
+
+  sf-header .sf-nav {
+    background: if(
+      $is-dark-theme,
+      constants.$blue-grey-700,
+      constants.$blue-grey-50
+    );
+    .nav.nav-pills {
+      .nav-link {
+        &:hover,
+        &.active {
+          background: if(
+            $is-dark-theme,
+            constants.$blue-grey-900,
+            constants.$blue-grey-700
+          );
+          color: constants.$white;
+          mat-icon {
+            color: constants.$white;
+          }
+        }
+      }
+    }
+    mat-icon {
+      color: if($is-dark-theme, constants.$white, constants.$darkgray);
+    }
+  }
+}

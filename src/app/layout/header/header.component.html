@@ -1,0 +1,33 @@
+<div class="sf-nav">
+  <h2 class="flex-grow-1">MyStore</h2>
+  <nav class="nav nav-pills nav-justified flex-grow-1">
+    <a
+      class="nav-link d-flex align-items-center justify-content-center"
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Product List
+      <mat-icon class="material-icons-outlined ml-2"> list</mat-icon>
+    </a>
+    <a
+      class="nav-link ml-3 d-flex align-items-center justify-content-center"
+      routerLink="cart"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Cart
+      <mat-icon
+        class="material-icons-outlined ml-3"
+        [matBadge]="numOfCartProducts"
+      >
+        shopping_basket </mat-icon
+      ><!-- Include text description of the icon's meaning for screen-readers -->
+      <span class="cdk-visually-hidden">
+        Example with a home icon with overlaid badge showing the number 15
+      </span></a
+    >
+  </nav>
+  <div class="d-flex justify-content-end flex-grow-1">
+    <sf-theme-picker></sf-theme-picker>
+  </div>
+</div>
