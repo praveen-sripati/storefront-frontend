@@ -1,10 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProductListService } from 'src/app/services/product-list.service';
@@ -85,12 +80,18 @@ export class CartComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
 
-  onCheckoutSubmit() {
+  onCheckoutSubmit(): void {
     this.isProductOrdered = true;
-    this.productListService.getIsProductOrderedSubject().next(this.isProductOrdered);
+    this.productListService
+      .getIsProductOrderedSubject()
+      .next(this.isProductOrdered);
   }
 
-  ngOnDestroy() {
+  removeFromCart(id: number): void {
+    this.productListService.removeFromCart(id);
+  }
+
+  ngOnDestroy(): void {
     this.cartSub.unsubscribe();
     this.totalPriceSub.unsubscribe();
   }

@@ -6,7 +6,7 @@
         loop
         mode="normal"
         src="https://assets5.lottiefiles.com/packages/lf20_3VDN1k.json"
-        style="width: 400px"
+        style="width: 400px; height: 400px;"
       >
       </lottie-player>
       <h2 class="w-75 text-center mt-4">
@@ -40,17 +40,31 @@
                   <mat-option
                     [value]="value"
                     *ngFor="let value of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-                    >{{ value }}</mat-option
-                  >
+                    >{{ value }}
+                  </mat-option>
                 </mat-select>
               </mat-form-field>
+              <button
+                class="product-delete-btn"
+                mat-fab
+                color="primary"
+                aria-label="Delete Product"
+                matTooltip="Delete Product"
+                (click)="removeFromCart(product.id)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
             </div>
           </div>
         </ng-container>
       </form>
     </div>
     <div class="d-flex">
-      <form [formGroup]="checkOutForm" class="sf-cart-user-details" (ngSubmit)="onCheckoutSubmit()">
+      <form
+        [formGroup]="checkOutForm"
+        class="sf-cart-user-details"
+        (ngSubmit)="onCheckoutSubmit()"
+      >
         <mat-form-field appearance="fill" class="mb-5">
           <mat-label>First name</mat-label>
           <input
@@ -117,12 +131,12 @@
           >
           <mat-error
             *ngIf="checkOutForm.get('creditCardNum')?.hasError('required')"
-            >Credit card number is required!</mat-error
-          >
+            >Credit card number is required!
+          </mat-error>
           <mat-error
             *ngIf="checkOutForm.get('creditCardNum')?.hasError('pattern')"
-            >Please enter digits only!</mat-error
-          >
+            >Please enter digits only!
+          </mat-error>
           <mat-error
             *ngIf="checkOutForm.get('creditCardNum')?.hasError('minlength')"
             >Credit card number should be 16 characters long!</mat-error
@@ -131,12 +145,7 @@
         <p class="font-italic text-center mb-5">
           We'll never share your payment details with anyone else.
         </p>
-        <button
-          mat-flat-button
-          [disabled]="!checkOutForm.valid"
-        >
-          Order
-        </button>
+        <button mat-flat-button [disabled]="!checkOutForm.valid">Order</button>
       </form>
       <div class="sf-cart-total-price-wrapper">
         <div
@@ -161,7 +170,7 @@
     loop
     mode="normal"
     src="https://assets1.lottiefiles.com/packages/lf20_y2hxPc.json"
-    style="width: 300px"
+    style="width: 300px; height: 300px;"
   >
   </lottie-player>
   <h1 class="text-success mt-2 mb-5">Success</h1>

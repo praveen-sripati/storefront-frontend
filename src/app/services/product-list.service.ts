@@ -73,6 +73,27 @@ export class ProductListService {
     }
   }
 
+  removeFromCart(productId: number): void {
+    if (this.cartList.length > 0) {
+      let deletedProduct!: Product;
+      this.cartList = this.cartList.filter((product) => {
+        if (product.id === productId) {
+          deletedProduct = product;
+        }
+        return product.id !== productId
+      });
+      this.cartListSubject$.next(this.cartList);
+      this.totalPriceSubject$.next(this.getTotalPrice());
+      this.snackBar.open(`Product ${deletedProduct?.name} has been removed from the cart!`, 'close', {
+        duration: this.durationInSeconds * 1000,
+      });
+    } else {
+      this.snackBar.open(`Cart is empty!`, '', {
+        duration: this.durationInSeconds * 500,
+      });
+    }
+  }
+
   emptyCart(): void {
     this.cartList = [];
     this.cartListSubject$.next(this.cartList);
