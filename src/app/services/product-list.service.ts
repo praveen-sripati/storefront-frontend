@@ -61,6 +61,9 @@ export class ProductListService {
       this.cartList.push(
         this.productList.filter((product) => product.id === productId)[0]
       );
+      this.snackBar.open('Product added in cart.', '', {
+        duration: this.durationInSeconds * 500,
+      });
       this.cartListSubject$.next(this.cartList);
       this.totalPriceSubject$.next(this.getTotalPrice());
     } else {
