@@ -1,4 +1,4 @@
-<div class="sf-cart-page-wrapper">
+<div class="sf-cart-page-wrapper" *ngIf="!isProductOrdered">
   <ng-container *ngIf="cartList.length === 0">
     <div class="d-flex flex-column justify-content-center align-items-center">
       <lottie-player
@@ -49,18 +49,139 @@
         </ng-container>
       </form>
     </div>
-    <form class="d-flex flex-column">
-      <mat-form-field class="mb-3" appearance="fill" floatLabel="always">
-        <mat-label>Quantity</mat-label>
-        <mat-select>
-          <mat-option
-            [value]="value"
-            *ngFor="let value of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-            >{{ value }}</mat-option
+    <div class="d-flex">
+      <form [formGroup]="checkOutForm" class="sf-cart-user-details" (ngSubmit)="onCheckoutSubmit()">
+        <mat-form-field appearance="fill" class="mb-5">
+          <mat-label>First name</mat-label>
+          <input
+            matInput
+            #firstName
+            maxlength="50"
+            placeholder="Ex. Nougat"
+            formControlName="firstName"
+            autocomplete="off"
+          />
+          <mat-hint align="end">{{ firstName.value?.length || 0 }}/50</mat-hint>
+          <mat-error *ngIf="checkOutForm.get('firstName')?.hasError('required')"
+            >First name is required!</mat-error
           >
-        </mat-select>
-      </mat-form-field>
-      <button mat-flat-button>Add to Cart</button>
-    </form>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="mb-5">
+          <mat-label>Last name</mat-label>
+          <input
+            matInput
+            #lastName
+            maxlength="50"
+            placeholder="Ex. Nougat"
+            formControlName="lastName"
+            autocomplete="off"
+          />
+          <mat-hint align="end">{{ lastName.value?.length || 0 }}/50</mat-hint>
+          <mat-error *ngIf="checkOutForm.get('lastName')?.hasError('required')"
+            >Last name is required!</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="mb-5">
+          <mat-label>Address</mat-label>
+          <textarea
+            matInput
+            #address
+            minlength="10"
+            maxlength="100"
+            placeholder="Ex. 100 Main St"
+            formControlName="address"
+            autocomplete="off"
+          ></textarea>
+          <mat-hint align="end">{{ address.value?.length || 0 }}/100</mat-hint>
+          <mat-error *ngIf="checkOutForm.get('address')?.hasError('required')"
+            >Address is required!</mat-error
+          >
+          <mat-error *ngIf="checkOutForm.get('address')?.hasError('minlength')"
+            >Address should be greater than 10 characters!</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="mb-4" floatLabel="always">
+          <mat-label>Credit card number</mat-label>
+          <input
+            matInput
+            #creditCard
+            minlength="19"
+            maxlength="19"
+            placeholder="Ex. 4000 4000 4000 4000"
+            formControlName="creditCardNum"
+            autocomplete="off"
+            credit-card-input
+          />
+          <mat-hint align="end"
+            >{{ creditCardTrimmedLength(creditCard) || 0 }}/16</mat-hint
+          >
+          <mat-error
+            *ngIf="checkOutForm.get('creditCardNum')?.hasError('required')"
+            >Credit card number is required!</mat-error
+          >
+          <mat-error
+            *ngIf="checkOutForm.get('creditCardNum')?.hasError('pattern')"
+            >Please enter digits only!</mat-error
+          >
+          <mat-error
+            *ngIf="checkOutForm.get('creditCardNum')?.hasError('minlength')"
+            >Credit card number should be 16 characters long!</mat-error
+          >
+        </mat-form-field>
+        <p class="font-italic text-center mb-5">
+          We'll never share your payment details with anyone else.
+        </p>
+        <button
+          mat-flat-button
+          [disabled]="!checkOutForm.valid"
+        >
+          Order
+        </button>
+      </form>
+      <div class="sf-cart-total-price-wrapper">
+        <div
+          class="d-flex justify-content-between mb-2"
+          *ngFor="let product of cartList"
+        >
+          <p>{{ product.name }} ({{ product.quantity }})</p>
+          <p>${{ product.price }}</p>
+        </div>
+        <h3 class="mt-4">Total Amount:</h3>
+        <h2 class="text-success">$ {{ this.totalPrice }}</h2>
+      </div>
+    </div>
   </ng-container>
+</div>
+<div
+  class="d-flex flex-column align-items-center w-50 mx-auto"
+  *ngIf="isProductOrdered"
+>
+  <lottie-player
+    autoplay
+    loop
+    mode="normal"
+    src="https://assets1.lottiefiles.com/packages/lf20_y2hxPc.json"
+    style="width: 300px"
+  >
+  </lottie-player>
+  <h1 class="text-success mt-2 mb-5">Success</h1>
+  <p class="mb-5">
+    Thank you,
+    <strong>
+      {{
+        checkOutForm.get("firstName")?.value +
+          " " +
+          checkOutForm.get("lastName")?.value
+      }}</strong
+    >!
+  </p>
+  <p class="mb-5">
+    Your <strong>${{ this.totalPrice }}</strong> order is confirmed!
+  </p>
+  <p class="mb-5">
+    Please allow <strong>1-3</strong> business day(s) for shipping.
+  </p>
+  <button mat-flat-button class="mb-5" (click)="orderProduct()">
+    Back to product list
+  </button>
 </div>

@@ -77,7 +77,7 @@ li,
 input,
 a {
   @include mixins.font-size(16);
-  @include mixins.line-height(32);
+  @include mixins.line-height(20);
   font-family: inherit;
   font-weight: 400;
 

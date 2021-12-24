@@ -34,5 +34,15 @@
 
   .mat-flat-button {
     background: if($is-dark-theme, constants.$purple-400, constants.$pink-400);
+    &.mat-button-disabled.mat-button-disabled {
+      background: if($is-dark-theme, rgba(constants.$purple-400, 0.5), rgba(constants.$pink-400, 0.5));
+    }
+  }
+
+  .mat-snack-bar-container {
+    font-weight: 500;
+    .mat-button {
+      color: if($is-dark-theme, constants.$brightred, constants.$pink-400);
+    }
   }
 }

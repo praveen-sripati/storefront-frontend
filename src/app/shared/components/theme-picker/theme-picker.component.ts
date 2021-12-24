@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject } from '@angular/core';
-import { LocalStorage } from 'src/app/shared/storage.service';
+import { LocalStorage } from 'src/app/shared/services/storage.service';
 
 export const storageKey = 'sf-theme';
 
@@ -10,7 +10,8 @@ export const storageKey = 'sf-theme';
     mat-icon-button
     type="button"
     (click)="toggleTheme()"
-    [title]="getToggleLabel()"
+    [matTooltip]="getToggleLabel()"
+    matTooltipPosition="left"
     [attr.aria-label]="getToggleLabel()"
     >
     <mat-icon> {{ isDark ? 'light' : 'dark' }}_mode </mat-icon>
