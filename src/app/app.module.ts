@@ -12,7 +12,6 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-
 import { STORAGE_PROVIDERS } from './shared/services/storage.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,6 +24,7 @@ import { ProductItemComponent } from './components/product-item/product-item.com
 import { ProductItemDetailComponent } from './components/product-item-detail/product-item-detail.component';
 import { CartComponent } from './components/cart/cart.component';
 import { CreditCardInputDirective } from './shared/directives/credit-card-input.directive';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -36,13 +36,14 @@ import { CreditCardInputDirective } from './shared/directives/credit-card-input.
     ProductItemComponent,
     ProductItemDetailComponent,
     CartComponent,
-    CreditCardInputDirective
+    CreditCardInputDirective,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    HttpClientModule,
     NgbModule,
     MatButtonModule,
     MatIconModule,
@@ -51,7 +52,7 @@ import { CreditCardInputDirective } from './shared/directives/credit-card-input.
     MatSelectModule,
     MatBadgeModule,
     MatSnackBarModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   providers: [STORAGE_PROVIDERS],
   bootstrap: [AppComponent],
