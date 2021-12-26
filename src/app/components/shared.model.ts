@@ -8,3 +8,10 @@ export interface Product {
   description: string;
   quantity?: number;
 }
+
+export interface checkOutFormData {
+  first_name: string;
+  last_name: string;
+  address: string;
+  credit_card_num: string;
+}

@@ -3,17 +3,19 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProductListService } from 'src/app/services/product-list.service';
-import { Product } from '../shared.model';
+import { checkOutFormData, Product } from '../shared.model';
 
 @Component({
   selector: 'sf-cart',
   templateUrl: './cart.component.html',
 })
 export class CartComponent implements OnInit, OnDestroy {
+  loader = false;
   sub!: Subscription;
   cartList: Product[] = [];
-  totalPrice: number = 0;
-  isProductOrdered: boolean = false;
+  totalPrice = 0;
+  isProductOrdered = false;
+  checkOutFormData!: checkOutFormData;
 
   quantityForm: FormGroup = this.fb.group({
     quantities: this.fb.array([]),
@@ -34,6 +36,7 @@ export class CartComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub = this.productListService.getCartList().subscribe((cartList) => {
       this.cartList = cartList;
+      this.getTotalPrice(0, 0);
       if (this.quantities.length <= 0) {
         for (let cartItem of this.cartList) {
           this.quantities.push(
@@ -44,6 +47,22 @@ export class CartComponent implements OnInit, OnDestroy {
         }
       }
     });
+
+    this.productListService.loader$.subscribe(
+      (loader) => (this.loader = loader)
+    );
+  }
+
+  getTotalPrice(productId?: number, quantity?: number): void {
+    this.totalPrice = 0;
+    this.cartList.forEach((product) => {
+      if (product.id === productId) {
+        this.totalPrice += product.price * (quantity ? quantity : 0);
+      } else {
+        this.totalPrice +=
+          product.price * (product.quantity ? product.quantity : 0);
+      }
+    });
   }
 
   get quantities(): FormArray {
@@ -52,9 +71,16 @@ export class CartComponent implements OnInit, OnDestroy {
 
   quantityChange(productId: number, event: any) {
     const quantity = event.value;
-    this.productListService.setQuantity(productId, quantity).subscribe();
-    this.productListService.setQuantityCart(productId, quantity).subscribe();
-    this.totalPrice = this.productListService.getTotalPrice();
+    this.sub = this.productListService
+      .setQuantity(productId, quantity)
+      .subscribe(() => {
+        this.getTotalPrice(productId, quantity);
+      });
+    this.sub = this.productListService
+      .setQuantityCart(productId, quantity)
+      .subscribe(() => {
+        this.getTotalPrice(productId, quantity);
+      });
   }
 
   creditCardTrimmedLength(creditCartNum: HTMLInputElement): number {
@@ -66,17 +92,25 @@ export class CartComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
 
-  onCheckoutSubmit(): void {
+  onCheckoutSubmit(checkOutFormData: checkOutFormData): void {
     this.isProductOrdered = true;
-    this.productListService
-      .getIsProductOrderedSubject()
-      .next(this.isProductOrdered);
+    this.productListService.isProductOrderedSubject$.next(
+      this.isProductOrdered
+    );
+    this.productListService.emptyCart();
+    this.checkOutFormData = checkOutFormData;
   }
 
   removeFromCart(id: number): void {
-    this.sub = this.productListService
-      .removeFromCart(id)
-      .subscribe((cartList) => (this.cartList = cartList));
+    this.productListService.removeFromCartObs(id).subscribe(() => {
+      this.sub = this.productListService.getCartList().subscribe((cartList) => {
+        let cartListLength = 0;
+        this.cartList = cartList;
+        this.getTotalPrice(0, 0)
+        cartListLength = cartList.length;
+        this.productListService.cartListLength$.next(cartListLength);
+      });
+    });
   }
 
   ngOnDestroy(): void {

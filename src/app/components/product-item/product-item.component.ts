@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ProductListService } from 'src/app/services/product-list.service';
 import { Product } from '../shared.model';
 
@@ -11,13 +10,12 @@ import { Product } from '../shared.model';
 export class ProductItemComponent implements OnInit {
   // @ts-ignore
   @Input() product: Product = {};
-
+  @Output() productClicked = new EventEmitter();
   productItemForm: FormGroup = this.fb.group({
     quantity: [],
   });
 
   constructor(
-    private router: Router,
     private fb: FormBuilder,
     private productListService: ProductListService
   ) {}
@@ -31,7 +29,7 @@ export class ProductItemComponent implements OnInit {
       product.id,
       this.productItemForm.get('quantity')?.value
     );
-    this.router.navigate([`product-details/${product.id}`]);
+    this.productClicked.emit(product.id);
   }
 
   addToCart(productId: number) {

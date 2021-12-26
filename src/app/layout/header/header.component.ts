@@ -8,36 +8,27 @@ import { ProductListService } from 'src/app/services/product-list.service';
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  cartSub: Subscription;
-  isProductOrderedSub: Subscription;
-  isProductOrdered: boolean = false;
-
+  sub!: Subscription;
   numOfCartProducts: number = 0;
 
-  constructor(private productList: ProductListService, private router: Router) {
-    this.cartSub = this.productList.getCartList().subscribe((cartList) => {
+  constructor(
+    private productListService: ProductListService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.sub = this.productListService.getCartList().subscribe((cartList) => {
       this.numOfCartProducts = cartList ? cartList.length : 0;
     });
-    this.isProductOrderedSub = this.productList
-      .getIsProductOrderedStatus()
-      .subscribe((isProductOrdered) => {
-        if (isProductOrdered) {
-          this.isProductOrdered = isProductOrdered;
-        }
-      });
-  }
-
-  ngOnInit(): void {}
-
-  onProductList(): void {
-    if (this.isProductOrdered) {
-      this.productList.emptyCart();
-    }
-    this.router.navigate(['']);
+    this.productListService.cartListLength$.subscribe((value) => {
+      this.numOfCartProducts = value;
+    });
+    this.productListService.isProductOrderedSubject$.subscribe((isOrdered) => {
+      if (isOrdered) this.numOfCartProducts = 0;
+    });
   }
 
   ngOnDestroy() {
-    this.cartSub.unsubscribe();
-    this.isProductOrderedSub.unsubscribe();
+    this.sub.unsubscribe();
   }
 }
