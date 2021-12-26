@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { ProductListService } from '../../services/product-list.service';
 import { Product } from '../shared.model';
 
@@ -8,14 +9,15 @@ import { Product } from '../shared.model';
   selector: 'sf-product-item-detail',
   templateUrl: './product-item-detail.component.html',
 })
-export class ProductItemDetailComponent implements OnInit {
+export class ProductItemDetailComponent implements OnInit, OnDestroy {
+  sub!: Subscription;
   // @ts-ignore
   product: Product = {};
   productId: number = 0;
 
   productItemDetailForm: FormGroup = this.fb.group({
-    quantity: []
-  })
+    quantity: [],
+  });
 
   constructor(
     private route: ActivatedRoute,
@@ -27,10 +29,14 @@ export class ProductItemDetailComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.productId = parseInt(params.id);
     });
-    this.product = this.productListService.getProducts().filter((product) => {
-      return product.id === this.productId;
-    })[0];
-    this.productItemDetailForm.get('quantity')?.setValue(this.product.quantity);
+    this.sub = this.productListService
+      .getProduct(this.productId)
+      .subscribe((data) => {
+        this.product = data;
+        this.productItemDetailForm
+          .get('quantity')
+          ?.setValue(this.product.quantity);
+      });
   }
 
   addToCart(productId: number) {
@@ -40,5 +46,9 @@ export class ProductItemDetailComponent implements OnInit {
   quantityChange(productId: number, event: any) {
     const quantity = event.value;
     this.productListService.setQuantity(productId, quantity);
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe()
   }
 }

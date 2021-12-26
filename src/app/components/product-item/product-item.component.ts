@@ -40,6 +40,7 @@ export class ProductItemComponent implements OnInit {
 
   quantityChange(productId: number, event: any) {
     const quantity = event.value;
-    this.productListService.setQuantity(productId, quantity);
+    this.productListService.setQuantity(productId, quantity).subscribe();
+    this.productListService.setQuantityCart(productId, quantity).subscribe();
   }
 }

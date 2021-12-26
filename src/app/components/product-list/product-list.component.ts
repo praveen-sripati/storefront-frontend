@@ -1,19 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Product } from '../shared.model';
 import { ProductListService } from '../../services/product-list.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'sf-product-list',
   templateUrl: './product-list.component.html',
 })
-export class ProductListComponent implements OnInit {
-  productList: Product[] = []
+export class ProductListComponent implements OnInit, OnDestroy {
+  sub!: Subscription;
+  productList: Product[] = [];
 
-  constructor(private productListService: ProductListService) { }
+  constructor(private productListService: ProductListService) {}
 
   ngOnInit(): void {
-    this.productList = this.productListService.getProducts()
+    this.sub = this.productListService.getProducts().subscribe((data) => {
+      this.productList = data;
+    });
     this.productListService.getIsProductOrderedSubject().next(false);
   }
 
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
 }

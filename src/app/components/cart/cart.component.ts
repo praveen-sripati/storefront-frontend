@@ -10,8 +10,7 @@ import { Product } from '../shared.model';
   templateUrl: './cart.component.html',
 })
 export class CartComponent implements OnInit, OnDestroy {
-  cartSub: Subscription;
-  totalPriceSub: Subscription;
+  sub!: Subscription;
   cartList: Product[] = [];
   totalPrice: number = 0;
   isProductOrdered: boolean = false;
@@ -30,36 +29,21 @@ export class CartComponent implements OnInit, OnDestroy {
     private productListService: ProductListService,
     private fb: FormBuilder,
     private router: Router
-  ) {
-    this.cartSub = this.productListService
-      .getCartList()
-      .subscribe((cartList) => {
-        if (cartList) {
-          this.cartList = cartList;
-        } else {
-          this.cartList = [];
-        }
-      });
-
-    this.totalPriceSub = this.productListService
-      .getTotalPriceSubject()
-      .subscribe((totalPrice) => {
-        if (totalPrice) {
-          this.totalPrice = totalPrice;
-        } else {
-          this.totalPrice = 0;
-        }
-      });
-  }
+  ) {}
 
   ngOnInit(): void {
-    for (let cartItem of this.cartList) {
-      this.quantities.push(
-        this.fb.group({
-          quantity: [cartItem.quantity],
-        })
-      );
-    }
+    this.sub = this.productListService.getCartList().subscribe((cartList) => {
+      this.cartList = cartList;
+      if (this.quantities.length <= 0) {
+        for (let cartItem of this.cartList) {
+          this.quantities.push(
+            this.fb.group({
+              quantity: [cartItem.quantity],
+            })
+          );
+        }
+      }
+    });
   }
 
   get quantities(): FormArray {
@@ -68,7 +52,9 @@ export class CartComponent implements OnInit, OnDestroy {
 
   quantityChange(productId: number, event: any) {
     const quantity = event.value;
-    this.productListService.setQuantity(productId, quantity);
+    this.productListService.setQuantity(productId, quantity).subscribe();
+    this.productListService.setQuantityCart(productId, quantity).subscribe();
+    this.totalPrice = this.productListService.getTotalPrice();
   }
 
   creditCardTrimmedLength(creditCartNum: HTMLInputElement): number {
@@ -88,11 +74,12 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   removeFromCart(id: number): void {
-    this.productListService.removeFromCart(id);
+    this.sub = this.productListService
+      .removeFromCart(id)
+      .subscribe((cartList) => (this.cartList = cartList));
   }
 
   ngOnDestroy(): void {
-    this.cartSub.unsubscribe();
-    this.totalPriceSub.unsubscribe();
+    this.sub.unsubscribe();
   }
 }
