@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProductListService } from 'src/app/services/product-list.service';
@@ -16,15 +16,13 @@ export class CartComponent implements OnInit, OnDestroy {
   totalPrice = 0;
   isProductOrdered = false;
   checkOutFormData!: checkOutFormData;
+  userFirstName: string = '';
+  userLastName: string = '';
+  userAddress: string = '';
+  creditCardNumber: number = 0;
 
   quantityForm: FormGroup = this.fb.group({
     quantities: this.fb.array([]),
-  });
-  checkOutForm: FormGroup = this.fb.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
-    address: ['', Validators.required],
-    creditCardNum: [, [Validators.required, Validators.pattern(/^[\d\s]*$/)]],
   });
 
   constructor(
@@ -106,11 +104,30 @@ export class CartComponent implements OnInit, OnDestroy {
       this.sub = this.productListService.getCartList().subscribe((cartList) => {
         let cartListLength = 0;
         this.cartList = cartList;
-        this.getTotalPrice(0, 0)
+        this.getTotalPrice(0, 0);
         cartListLength = cartList.length;
         this.productListService.cartListLength$.next(cartListLength);
       });
     });
+  }
+
+  valueChanged(inputName: string, event: any): void {
+    switch (inputName) {
+      case 'firstName':
+        this.userFirstName = event;
+        break;
+      case 'lastName':
+        this.userLastName = event;
+        break;
+      case 'address':
+        this.userAddress = event;
+        break;
+      case 'creditCardNum':
+        this.creditCardNumber = event;
+        break;
+      default:
+        break;
+    }
   }
 
   ngOnDestroy(): void {

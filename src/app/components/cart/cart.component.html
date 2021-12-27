@@ -74,10 +74,11 @@
             autocomplete="off"
             name="first_name"
             #firstName="ngModel"
+            (ngModelChange)="valueChanged('firstName', $event)"
             ngModel
             required
           />
-          <mat-hint align="end">{{ firstName.value?.length || 0 }}/50</mat-hint>
+          <mat-hint align="end">{{ userFirstName.length || 0 }}/50</mat-hint>
           <mat-error *ngIf="firstName.hasError('required')"
             >First name is required!</mat-error
           >
@@ -91,10 +92,11 @@
             autocomplete="off"
             name="last_name"
             #lastName="ngModel"
+            (ngModelChange)="valueChanged('lastName', $event)"
             ngModel
             required
           />
-          <mat-hint align="end">{{ lastName.value?.length || 0 }}/50</mat-hint>
+          <mat-hint align="end">{{ userLastName.length || 0 }}/50</mat-hint>
           <mat-error *ngIf="lastName.hasError('required')"
             >Last name is required!</mat-error
           >
@@ -109,10 +111,11 @@
             autocomplete="off"
             name="address"
             #address="ngModel"
+            (ngModelChange)="valueChanged('address', $event)"
             ngModel
             required
           ></textarea>
-          <mat-hint align="end">{{ address.value?.length || 0 }}/100</mat-hint>
+          <mat-hint align="end">{{ userAddress.length || 0 }}/100</mat-hint>
           <mat-error *ngIf="address.hasError('required')"
             >Address is required!</mat-error
           >
@@ -131,6 +134,7 @@
             name="credit_card_num"
             #creditCard
             #creditCardControl="ngModel"
+            (ngModelChange)="valueChanged('creditCardNum', $event)"
             ngModel
             pattern="^[\d\s]*$"
             credit-card-input
